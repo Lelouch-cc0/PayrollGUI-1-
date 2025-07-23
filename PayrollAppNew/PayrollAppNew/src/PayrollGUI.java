@@ -1,4 +1,4 @@
-// PayrollGUI.java (updated with password change feature)
+// PayrollGUI.java
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,7 +41,7 @@ public class PayrollGUI extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Search Panel (unchanged)
+        // Search Panel
         JPanel searchPanel = new JPanel(new GridLayout(0, 2, 10, 10));
         searchPanel.setBorder(BorderFactory.createTitledBorder("Employee Search"));
         lastNameField = new JTextField();
@@ -74,7 +74,7 @@ public class PayrollGUI extends JFrame {
         deleteButton.setEnabled(false);
         deleteButton.addActionListener(e -> deleteEmployee());
 
-        // NEW: Change Password Button
+        // Change Password Button
         changePasswordButton = new JButton("Change Password");
         changePasswordButton.setBackground(new Color(100, 149, 237)); // Cornflower Blue
         changePasswordButton.setForeground(Color.WHITE);
@@ -88,7 +88,7 @@ public class PayrollGUI extends JFrame {
         topButtonsPanel.add(deleteButton);
         topButtonsPanel.add(changePasswordButton); // NEW BUTTON
 
-        // Rest of the UI setup (unchanged)
+        // Rest of the UI setup
         JPanel inputPanel = new JPanel(new BorderLayout());
         inputPanel.add(topButtonsPanel, BorderLayout.NORTH);
         inputPanel.add(searchPanel, BorderLayout.CENTER);
@@ -104,7 +104,7 @@ public class PayrollGUI extends JFrame {
         add(mainPanel);
     }
 
-    // NEW METHOD: Password Change Dialog
+    //Password Change Dialog
     private void showPasswordChangeDialog() {
         JDialog dialog = new JDialog(this, "Change Password", true);
         dialog.setLayout(new GridLayout(4, 2, 10, 10));
@@ -221,8 +221,8 @@ public class PayrollGUI extends JFrame {
         } catch (Exception ex) {
             showError("Search Error", ex.getMessage());
         }
-    }  // Removed extra closing brace
-// Removed extra closing brace
+    }  
+
 
     private void showError(String title, String message) {
         JOptionPane.showMessageDialog(this,
@@ -249,5 +249,5 @@ public class PayrollGUI extends JFrame {
     private void deleteEmployee() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-}  // This closes the PayrollGUI class
+}  
 
