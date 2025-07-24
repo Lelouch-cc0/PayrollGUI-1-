@@ -4,8 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-
+import java.util.List;
+import java.util.Map;
 public class PayrollGUI extends JFrame {
     private JTextField firstNameField;
     private JTextField lastNameField;
