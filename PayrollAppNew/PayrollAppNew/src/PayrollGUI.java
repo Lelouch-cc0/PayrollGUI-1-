@@ -231,23 +231,98 @@ public class PayrollGUI extends JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         EventQueue.invokeLater(() -> {
-            try {
+            try 
+            {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 new PayrollGUI().setVisible(true);
-            } catch (Exception e) {
+            } catch (Exception e) 
+            {
                 e.printStackTrace();
             }
         });
     }
 
-    private void updateEmployee() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void updateEmployee() 
+    {
+        if (currentEmployee == null) 
+        {
+        showError("Update Error", "No employee selected");
+        return;
+        }
+
+        // Create update form with current employee data
+        NewEmployeeForm updateForm = new NewEmployeeForm(this, CSV_FILE, currentEmployee);
+        updateForm.setVisible(true);
+
+        // Refresh search to show updated data
+        performSearch(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "refresh"));
+        
+        // Reset current selection
+        currentEmployee = null;
+        updateButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+        resultArea.setText("");
     }
 
-    private void deleteEmployee() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void deleteEmployee() 
+    {
+        if (currentEmployee == null) 
+        {
+        showError("Delete Error", "No employee selected");
+        return;
+        }
+
+        // Confirm deletion
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to delete employee: " + 
+            currentEmployee.getDetails().get("First Name") + " " + 
+            currentEmployee.getDetails().get("Last Name") + "?",
+            "Confirm Delete",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) 
+        {
+            try 
+            {
+                // Read existing employees
+                List<Employee> employees = EmployeeCSVReader.readEmployees(CSV_FILE);
+                
+                // Remove the employee
+                employees.removeIf(emp -> 
+                    emp.getDetails().get("First Name").equals(currentEmployee.getDetails().get("First Name")) &&
+                    emp.getDetails().get("Last Name").equals(currentEmployee.getDetails().get("Last Name"))
+                );
+                
+                // Write back to CSV
+                EmployeeCSVWriter.writeEmployees(CSV_FILE, employees);
+                
+                // Clear the selection
+                currentEmployee = null;
+                updateButton.setEnabled(false);
+                deleteButton.setEnabled(false);
+                resultArea.setText("");
+                
+                // Clear search fields
+                lastNameField.setText("");
+                firstNameField.setText("");
+                
+                JOptionPane.showMessageDialog(this,
+                    "Employee deleted successfully",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+                    
+            } 
+            catch (IOException ex) 
+            {
+                showError("Delete Error", "Failed to delete employee: " + ex.getMessage());
+            }
+        }
     }
 }  
 
